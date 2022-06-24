@@ -29,7 +29,7 @@ func testBulderX() {
 	builder.SourceBuilder().Source(&cat).Alia("cat").JoinOn(INNER_JOIN,ON("pet_id","p","id"))
 	builder.
 		GroupBy("c.color").
-		Having(Gt,"id",1000).
+		Having(Gt,"d.id_count",1000).
 		Sort("p.id",DESC).
 		Paged().Rows(10).Last(101)
 
