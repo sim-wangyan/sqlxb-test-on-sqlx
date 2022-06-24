@@ -1,4 +1,5 @@
 # sqlxb-test-on-sqlx
+for testing [sqlxb](https://github.com/x-ream/sqlxb)
 
 
 ## Test case contribution
