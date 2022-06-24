@@ -39,6 +39,7 @@ func testBulderX() {
 	fmt.Println(kmp)
 	fmt.Println(countSql)
 
+	// start sqlx
 	InitSqlxDB()
 
 	catList := []Cat{}
