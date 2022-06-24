@@ -2,10 +2,31 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 	. "github.com/x-ream/sqlxb"
+	"testing"
 )
 
-func testBulderX() {
+var Db *sqlx.DB
+func InitSqlxDB() *sqlx.DB {
+
+	var err interface{}
+	Db, err = sqlx.Connect("mysql",
+		"root:123456@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True")
+	if err != nil {
+		fmt.Printf("connect DB failed, err:%v\n", err)
+		if Db != nil  {
+			Db.Close()
+		}
+	}
+	Db.SetMaxOpenConns(16)
+	Db.SetMaxIdleConns(8)
+
+	return Db
+}
+
+func TestBulderX(t *testing.T) {
 
 	pet := Pet{}
 	cat := Cat{}
@@ -29,7 +50,7 @@ func testBulderX() {
 	builder.SourceBuilder().Source(&cat).Alia("cat").JoinOn(INNER_JOIN,ON("pet_id","p","id"))
 	builder.
 		GroupBy("c.color").
-		Having(Gt,"d.id_count",1000).
+		Having(Gt,"id",1000).
 		Sort("p.id",DESC).
 		Paged().Rows(10).Last(101)
 
@@ -39,7 +60,6 @@ func testBulderX() {
 	fmt.Println(kmp)
 	fmt.Println(countSql)
 
-	// start sqlx
 	InitSqlxDB()
 
 	catList := []Cat{}
